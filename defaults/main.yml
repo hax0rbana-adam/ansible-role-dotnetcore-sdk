@@ -1,0 +1,24 @@
+# The version of dotnet that you'd like. Supported versions can be found at:
+# https://learn.microsoft.com/en-us/dotnet/core/install/linux-debian
+dotnet_version: 10
+
+# By default, the apt repo will use the correct one for your distro
+# However, this can be overridden becuase Microsoft screwed up their repos.
+# For example, in the case of Debian 13, only .NET 10.0 is available, despite
+# their documentation saying 8, 9, and 10 are all supported. As such, users
+# on Debian 13 who want an older version of the sdk will want to set the
+# following variable to "12" where all three versions of .NET are available.
+dotnet_distro_major_version: "{{ ansible_distribution_major_version }}"
+# If overriding the major version, you'll also need to override the codename
+dotnet_distro_codename: "{{ ansible_distribution_release }}"
+
+# Microsoft also changed their key in the spring of 2025, as described here:
+# https://packages.microsoft.com/keys/
+# So it's possible we will need to override the filename and checksum if using
+# an older repo.
+dotnet_key_filename: microsoft-rolling.asc
+dotnet_key_checksum: sha256:d45224d594d969f084232deaaf97c58ca502a9d964c362d7aaef5a76e16b3dd1
+
+# In case the format of the package name changed in the future, you can
+# override it here
+dotnet_package_name: dotnet-sdk-{{ dotnet_version }}.0

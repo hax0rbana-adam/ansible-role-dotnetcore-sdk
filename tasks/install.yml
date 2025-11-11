@@ -1,7 +1,7 @@
 ---
 
 - name: install prerequisites
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
     update_cache: yes
@@ -10,30 +10,22 @@
     - apt-transport-https
   become: yes
 
-- name: add apt-key
-  apt_key:
-    url: https://packages.microsoft.com/keys/microsoft.asc
-    state: present
+- name: Getting PGP key for Microsoft's apt server
+  ansible.builtin.get_url:
+    url: https://packages.microsoft.com/keys/{{ dotnet_key_filename }}
+    dest: /usr/share/keyrings/{{ dotnet_key_filename }}
+    checksum: "{{ dotnet_key_checksum }}"
   become: yes
+  when: ansible_pkg_mgr == "apt"
 
 - name: add repository
-  apt_repository:
-    repo: "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-{{ ansible_distribution | lower }}-{{ ansible_distribution_release | lower }}-prod {{ ansible_distribution_release | lower }} main"
-    state: present
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/{{ dotnet_key_filename }}] https://packages.microsoft.com/{{ ansible_distribution | lower }}/{{ dotnet_distro_major_version }}/prod {{ dotnet_distro_codename | lower }} main"
   become: yes
+  when: ansible_pkg_mgr == "apt"
 
 - name: install dotnet
-  apt:
-    name: "{{ item }}"
+  ansible.builtin.apt:
+    name: "{{ dotnet_package_name }}"
     state: latest
-  with_items:
-    - dotnet-sdk-2.0.0
-    - dotnet-dev-1.0.4
-    - dotnet-dev-1.1.4
-    - dotnet-hostfxr-1.0.1
-    - dotnet-hostfxr-1.1.0
-    - dotnet-sharedframework-microsoft.netcore.app-1.0.5
-    - dotnet-sharedframework-microsoft.netcore.app-1.0.7
-    - dotnet-sharedframework-microsoft.netcore.app-1.1.2
-    - dotnet-sharedframework-microsoft.netcore.app-1.1.4
   become: yes
