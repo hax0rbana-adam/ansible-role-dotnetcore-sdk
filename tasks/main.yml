@@ -1,3 +1,32 @@
----
+- name: Install prerequisites
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  with_items:
+    - apt-transport-https
+  become: true
 
-- include_tasks: install.yml
+- name: Getting PGP key for Microsoft's apt server
+  ansible.builtin.get_url:
+    url: https://packages.microsoft.com/keys/{{ dotnet_key_filename }}
+    dest: /usr/share/keyrings/{{ dotnet_key_filename }}
+    checksum: "{{ dotnet_key_checksum }}"
+    mode: "644"
+  become: true
+  when: ansible_pkg_mgr == "apt"
+
+- name: Add repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/\
+           {{ dotnet_key_filename }}] https://packages.microsoft.com/\
+           {{ ansible_distribution | lower }}/{{ dotnet_distro_major_version }}/\
+           prod {{ dotnet_distro_codename | lower }} main"
+  become: true
+  when: ansible_pkg_mgr == "apt"
+
+- name: Install dotnet
+  ansible.builtin.apt:
+    name: "{{ dotnet_package_name }}"
+  become: true
