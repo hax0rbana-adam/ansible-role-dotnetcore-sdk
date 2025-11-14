@@ -1,12 +1,17 @@
 ---
 
 galaxy_info:
-  author: Gunter Grodotzki
-  description: Installs .NET Core (SDK) on Ubuntu.
-  company: weheartwebsites UG
+  author: Adam
+  role_name: hax0rban_adam
+  namespace: dotnetcore_sdk
+  description: Installs .NET Core (SDK) on Linux
   license: MIT
   min_ansible_version: 2.3
   platforms:
+    - name: Debian
+      versions:
+        - bookworm
+        - trixie
     - name: Ubuntu
       versions:
         - zesty
