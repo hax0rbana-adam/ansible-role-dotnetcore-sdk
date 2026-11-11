@@ -29,3 +29,4 @@
     name: "{{ dotnet_package_name }}"
     state: latest
   become: yes
+  notify: Update all workloads

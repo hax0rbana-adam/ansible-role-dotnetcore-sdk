@@ -1,0 +1,5 @@
+# This is required when upgrading. It is not required on initial install, but
+# it's always safe to do.
+- name: Update all workloads
+  ansible.builtin.command:
+    cmd: dotnet workload update
