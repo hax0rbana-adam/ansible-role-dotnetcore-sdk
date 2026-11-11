@@ -17,4 +17,7 @@ galaxy_info:
   galaxy_tags:
     - system
     - development
+  role_name: btcpayserver
+  namespace: hax0rbana_adam
+
 dependencies: []
