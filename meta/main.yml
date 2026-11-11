@@ -5,7 +5,7 @@ galaxy_info:
   description: Installs .NET Core (SDK) on Ubuntu.
   company: weheartwebsites UG
   license: MIT
-  min_ansible_version: 2.3
+  min_ansible_version: "2.3"
   platforms:
     - name: Ubuntu
       versions:

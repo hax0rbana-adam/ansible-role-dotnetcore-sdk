@@ -1,3 +1,4 @@
 ---
 
-- include_tasks: install.yml
+- name: Installing dotnet
+  ansible.builtin.include_tasks: install.yml

@@ -5,3 +5,4 @@
     cmd: dotnet workload update
   become: true
   become_user: '{{ dotnet_workload_user }}'
+  changed_when: true
