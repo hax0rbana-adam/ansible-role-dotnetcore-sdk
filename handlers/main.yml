@@ -3,3 +3,5 @@
 - name: Update all workloads
   ansible.builtin.command:
     cmd: dotnet workload update
+  become: true
+  become_user: '{{ dotnet_workload_user }}'

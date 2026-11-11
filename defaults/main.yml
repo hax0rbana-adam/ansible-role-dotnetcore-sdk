@@ -22,3 +22,6 @@ dotnet_key_checksum: sha256:d45224d594d969f084232deaaf97c58ca502a9d964c362d7aaef
 # In case the format of the package name changed in the future, you can
 # override it here
 dotnet_package_name: dotnet-sdk-{{ dotnet_version }}.0
+
+# The user to become when updating workloads
+dotnet_workload_user: root
